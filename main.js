@@ -5,7 +5,7 @@ var Binary = {
 };
 
 var multiplicant = 9,
-  multiplier = -7;
+  multiplier = 9;
 (function booth_algo(M, Q) {
   const M_len = parseInt(Math.abs(M), 10).toString(2).length + 1;
   const Q_len = (count = Q >= 0 ? parseInt(Math.abs(Q), 10).toString(2).length + 1 : parseInt(Math.abs(Q), 10).toString(2).length + 2);
@@ -83,6 +83,7 @@ var multiplicant = 9,
     A = AQ.slice(0, M_len);
     Q = AQ.slice(M_len);
 
+    //next iteration
     Q_0 = AQ[AQ.length - 1];
     Q_0Q_1 = String(Q_0).concat(String(Q_1));
     count--;
@@ -162,3 +163,16 @@ function convert_array_of_binary_to_string(arr) {
 
 var string = convert_array_of_binary_to_string([1, 0, 1, 1, 1]);
 var sum = binary_addition(A, Q);
+
+var DOM_select = {
+  start: document.querySelector("#start"),
+  init: document.querySelector("#init"),
+  A_minus_M: document.querySelector("#A_minus_M"),
+  A_plus_M: document.querySelector("#A_plus_M"),
+  ASR: document.querySelector("#ASR"),
+  stop: document.querySelector("#stop"),
+  first_decision: document.querySelector("#first_decision"),
+  count: document.querySelector("#count")
+};
+Object.freeze(DOM_select);
+DOM_select.ASR.style.fill = "green";
