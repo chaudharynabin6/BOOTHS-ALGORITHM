@@ -1,7 +1,11 @@
+var Binary = {
+  convert_string_to_array_of_binary,
+  binary_addition
+};
+
 var multiplicant = -6,
   multiplier = -9;
 (function booth_algo(M, Q) {
-  var A = "0";
   const M_len = parseInt(Math.abs(M), 10).toString(2).length + 1;
   const Q_len = (count = Q >= 0 ? parseInt(Math.abs(Q), 10).toString(2).length : parseInt(Math.abs(Q), 10).toString(2).length + 1);
 
@@ -15,10 +19,26 @@ var multiplicant = -6,
 
   Q > 0 ? (Q = parseInt(Q, 10).toString(2)) : (Q = parseInt(Math.pow(2, count) + ~Math.abs(Q) + 1, 10).toString(2));
 
+  var A = "0";
+  for (let i = 0; i < __M.length - 1; i++) {
+    A = A.concat("0");
+  }
+
   //* comparing Q0Q-1
   var Q_0 = Q[Q_len - 1];
   var Q_1 = 0;
   var Q_0Q_1 = Q_0.concat(Q_1);
+  A = Binary.convert_string_to_array_of_binary(A);
+  Q = Binary.convert_string_to_array_of_binary(Q);
+  __M = Binary.convert_string_to_array_of_binary(__M);
+  minus_M = Binary.convert_string_to_array_of_binary(minus_M);
+
+  if (__M.length < M_len) {
+    __M.unshift(0);
+  }
+  if (minus_M.length < M_len) {
+    minus_M.unshift(0);
+  }
   while (count > 0) {
     switch (Q_0Q_1) {
       case "10":
@@ -26,6 +46,9 @@ var multiplicant = -6,
         // A += minus_M;  //!wrong approach
         // A = parseInt(A, 2).toString(10) + parseInt(minus_M, 2).toString(10);
         // A = (A >>> 0).toString(2); //! not applicable for this condition
+
+        //?new solution
+        A = Binary.binary_addition(A, minus_M);
         break;
 
       case "01":
@@ -33,49 +56,28 @@ var multiplicant = -6,
         //A += int__M; //! wrong approach
         // A = parseInt(A, 2).toString(10) + parseInt(__M, 2).toString(10);
         // A = (A >>> 0).toString(2); //! not applicable for this condition
+
+        //?new solution
+        A = Binary.binary_addition(A, __M);
         break;
 
       default:
         break;
     }
-    // if (A.length > M_len) {
-    //   A = A.slice(1);
-    // }
-    // if (M_len > A.length) {
-    //   for (let i = M_len - A.length; i > 0; i--) {
-    //     A = "0".concat(A);
-    //   }
-    // }
 
-    // if (A.length > M_len) {
-    //   A = A.slice(-M_len);
-    // }
-    var AQ = A.concat(Q);
+    //Merging A and Q
+    AQ = [...A, ...Q];
 
-    // if (AQ.length > M_len + Q_len) {
-    //   AQ = AQ.slice(1);
-    // }
-    //* Arithmetic shift right
+    //Seperating Q_1 from AQ as well as Arithmetic shifting to Right
+    AQ = AQ.reverse();
+    [Q_1, ...AQ] = AQ;
+    AQ = AQ.reverse();
+    AQ.unshift(AQ[0]);
 
-    Q_1 = AQ[AQ.length - 1];
+    //TODO: Seperating A and Q from AQ
 
-    var temp_arr = [];
-
-    for (let i = Q_len + M_len - 2; i >= 0; i--) {
-      ("strict mode");
-      temp_arr[i + 1] = AQ[i];
-    }
-    temp_arr[0] = AQ[0];
-    var temp_string = "";
-    temp_arr.forEach(element => {
-      temp_string = temp_string.concat(element);
-    });
-    AQ = temp_string;
-
-    A = AQ.slice(0, M_len);
-    Q = AQ.slice(M_len);
-    Q_0 = Q[Q_len - 1];
-    Q_0Q_1 = Q_0.concat(Q_1);
+    Q_0 = AQ[AQ.length - 1];
+    Q_0Q_1 = String(Q_0).concat(String(Q_1));
     count--;
   }
   multiple = parseInt(AQ, 2).toString(10);
@@ -119,8 +121,7 @@ function convert_string_to_array_of_binary(string) {
 A = convert_string_to_array_of_binary("1110");
 Q = convert_string_to_array_of_binary("1110");
 
-AQ = [1, 1, 1, 1, 0, 0, 0];
-//AQ = [...A, ...Q];
+AQ = [...A, ...Q];
 AQ = AQ.reverse();
 [Q_1, ...AQ] = AQ;
 AQ = AQ.reverse();
