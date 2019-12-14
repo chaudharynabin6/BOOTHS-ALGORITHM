@@ -1,0 +1,14 @@
+#start,
+#init,
+#A_minus_M,
+#A_plus_M,
+#ASR,
+#stop {
+  fill: red;
+  opacity: 1;
+}
+
+#first_decision,
+#count {
+  fill: blue;
+}
