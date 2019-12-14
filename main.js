@@ -1,13 +1,14 @@
 var Binary = {
   convert_string_to_array_of_binary,
-  binary_addition
+  binary_addition,
+  convert_array_of_binary_to_string
 };
 
-var multiplicant = -6,
-  multiplier = -9;
+var multiplicant = 9,
+  multiplier = -7;
 (function booth_algo(M, Q) {
   const M_len = parseInt(Math.abs(M), 10).toString(2).length + 1;
-  const Q_len = (count = Q >= 0 ? parseInt(Math.abs(Q), 10).toString(2).length : parseInt(Math.abs(Q), 10).toString(2).length + 1);
+  const Q_len = (count = Q >= 0 ? parseInt(Math.abs(Q), 10).toString(2).length + 1 : parseInt(Math.abs(Q), 10).toString(2).length + 2);
 
   if (M > 0) {
     __M = parseInt(M, 10).toString(2);
@@ -19,15 +20,13 @@ var multiplicant = -6,
 
   Q > 0 ? (Q = parseInt(Q, 10).toString(2)) : (Q = parseInt(Math.pow(2, count) + ~Math.abs(Q) + 1, 10).toString(2));
 
-  var A = "0";
-  for (let i = 0; i < __M.length - 1; i++) {
+  var A = "";
+  for (let i = 0; i < M_len; i++) {
     A = A.concat("0");
   }
 
   //* comparing Q0Q-1
-  var Q_0 = Q[Q_len - 1];
-  var Q_1 = 0;
-  var Q_0Q_1 = Q_0.concat(Q_1);
+
   A = Binary.convert_string_to_array_of_binary(A);
   Q = Binary.convert_string_to_array_of_binary(Q);
   __M = Binary.convert_string_to_array_of_binary(__M);
@@ -39,6 +38,12 @@ var multiplicant = -6,
   if (minus_M.length < M_len) {
     minus_M.unshift(0);
   }
+  if (Q.length < Q_len) {
+    Q.unshift(0);
+  }
+  var Q_0 = Q[Q.length - 1];
+  var Q_1 = 0;
+  var Q_0Q_1 = String(Q_0).concat(Q_1);
   while (count > 0) {
     switch (Q_0Q_1) {
       case "10":
@@ -74,13 +79,17 @@ var multiplicant = -6,
     AQ = AQ.reverse();
     AQ.unshift(AQ[0]);
 
-    //TODO: Seperating A and Q from AQ
+    // Seperating A and Q from AQ
+    A = AQ.slice(0, M_len);
+    Q = AQ.slice(M_len);
 
     Q_0 = AQ[AQ.length - 1];
     Q_0Q_1 = String(Q_0).concat(String(Q_1));
     count--;
   }
-  multiple = parseInt(AQ, 2).toString(10);
+
+  let mutiple = -Math.pow(2 * AQ[0], AQ.length - 1) + Number(parseInt(Binary.convert_array_of_binary_to_string(AQ.slice(1)), 2).toString(10));
+
   zzzzzzzzzzzzzzzzzzzzzzz = 1;
 })(multiplicant, multiplier);
 
@@ -142,5 +151,14 @@ function binary_addition(Q, A) {
   }
   return sum;
 }
+bin = binary_addition([1, 1, 1, 1], [1, 0, 1, 0]);
+function convert_array_of_binary_to_string(arr) {
+  let string = "";
+  arr.forEach(element => {
+    string = string.concat(element);
+  });
+  return string;
+}
 
+var string = convert_array_of_binary_to_string([1, 0, 1, 1, 1]);
 var sum = binary_addition(A, Q);
