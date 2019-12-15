@@ -1,15 +1,83 @@
-var Binary = {
-  convert_string_to_array_of_binary,
-  binary_addition,
-  convert_array_of_binary_to_string
+var Binary = {};
+
+Binary.__proto__ = {
+  /**
+   * converts the Binary string into the array of binary string
+   *
+   * @param {string} string
+   * @returns Array of binary bits
+   */
+  convert_string_to_array_of_binary: function convert_string_to_array_of_binary(string) {
+    let arr = [];
+
+    for (let i = 0; i < string.length; i++) {
+      arr.push(parseInt(string[i], 2));
+    }
+    return arr;
+  },
+  /** Sum A and Q ignoring the last carry
+   *
+   *
+   * @param {Array} Q Array of binary bit
+   * @param {Array} A Aray of binary bit
+   * @returns {Array} sum of A and Q in binary bit
+   */
+  binary_addition: function binary_addition(Q, A) {
+    let Q_len = Q.length;
+    let carry = 0;
+    let sum = [];
+    for (let i = Q_len - 1; i >= 0; i--) {
+      sum[i] = Q[i] + A[i] + carry;
+      if (sum[i] > 1) {
+        carry = 1;
+      } else {
+        carry = 0;
+      }
+      sum[i] = sum[i] % 2;
+    }
+    return sum;
+  },
+  /** converts the array of binary bit into
+   * binary string
+   *
+   *
+   * @param {Array} arr  Array of binary bit
+   * @returns equivalent string
+   */
+  convert_array_of_binary_to_string: function convert_array_of_binary_to_string(arr) {
+    let string = "";
+    arr.forEach(element => {
+      string = string.concat(element);
+    });
+    return string;
+  }
 };
 
 var multiplicant = 9,
   multiplier = 9;
+
 (function booth_algo(M, Q) {
+  /** Implementation of booth algorithm
+   *
+   * @param {Number} M integer
+   * @param {Number} Q integer
+   * @returns none
+   * @yields
+   */
+  //* find the length of M and Q
+  /**
+   * parsing the integer into binary string
+   * then finding its length
+   * 1 is added so that it works for - M as well
+   *
+   * 2 is added for finding the length of Q so that
+   * it works for 7 15 or 111 1111 1111 binary value of Q
+   */
+
   const M_len = parseInt(Math.abs(M), 10).toString(2).length + 1;
   const Q_len = (count = Q >= 0 ? parseInt(Math.abs(Q), 10).toString(2).length + 1 : parseInt(Math.abs(Q), 10).toString(2).length + 2);
 
+  //*
   if (M > 0) {
     __M = parseInt(M, 10).toString(2);
     minus_M = parseInt(Math.pow(2, M_len) + ~M + 1, 10).toString(2);
@@ -47,7 +115,7 @@ var multiplicant = 9,
   while (count > 0) {
     switch (Q_0Q_1) {
       case "10":
-        //TODO: A <- A - __M
+        //FIXED: A <- A - __M
         // A += minus_M;  //!wrong approach
         // A = parseInt(A, 2).toString(10) + parseInt(minus_M, 2).toString(10);
         // A = (A >>> 0).toString(2); //! not applicable for this condition
@@ -57,7 +125,7 @@ var multiplicant = 9,
         break;
 
       case "01":
-        //TODO: A <- A +  =__M
+        //FIXED: A <- A +  =__M
         //A += int__M; //! wrong approach
         // A = parseInt(A, 2).toString(10) + parseInt(__M, 2).toString(10);
         // A = (A >>> 0).toString(2); //! not applicable for this condition
@@ -131,12 +199,6 @@ function convert_string_to_array_of_binary(string) {
 A = convert_string_to_array_of_binary("1110");
 Q = convert_string_to_array_of_binary("1110");
 
-AQ = [...A, ...Q];
-AQ = AQ.reverse();
-[Q_1, ...AQ] = AQ;
-AQ = AQ.reverse();
-AQ.unshift(AQ[0]);
-
 function binary_addition(Q, A) {
   let Q_len = Q.length;
   let carry = 0;
@@ -152,6 +214,12 @@ function binary_addition(Q, A) {
   }
   return sum;
 }
+AQ = [...A, ...Q];
+AQ = AQ.reverse();
+[Q_1, ...AQ] = AQ;
+AQ = AQ.reverse();
+AQ.unshift(AQ[0]);
+
 bin = binary_addition([1, 1, 1, 1], [1, 0, 1, 0]);
 function convert_array_of_binary_to_string(arr) {
   let string = "";
