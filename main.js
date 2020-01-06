@@ -54,7 +54,7 @@ Binary.__proto__ = {
 };
 
 var multiplicant = 9,
-  multiplier = 9;
+  multiplier = 7;
 
 (function booth_algo(M, Q) {
   /** Implementation of booth algorithm
@@ -77,7 +77,7 @@ var multiplicant = 9,
   const M_len = parseInt(Math.abs(M), 10).toString(2).length + 1;
   const Q_len = (count = Q >= 0 ? parseInt(Math.abs(Q), 10).toString(2).length + 1 : parseInt(Math.abs(Q), 10).toString(2).length + 2);
 
-  //*
+  //* Converting M ,the interger to binary
   if (M > 0) {
     __M = parseInt(M, 10).toString(2);
     minus_M = parseInt(Math.pow(2, M_len) + ~M + 1, 10).toString(2);
@@ -85,9 +85,10 @@ var multiplicant = 9,
     __M = parseInt(Math.pow(2, M_len) + ~Math.abs(M) + 1, 10).toString(2);
     minus_M = parseInt(Math.abs(M), 10).toString(2);
   }
-
+  //* Converting Q, the integer to binary
   Q > 0 ? (Q = parseInt(Q, 10).toString(2)) : (Q = parseInt(Math.pow(2, count) + ~Math.abs(Q) + 1, 10).toString(2));
 
+  //* eg. Ajusting 00000 binary instead of 0 integer
   var A = "";
   for (let i = 0; i < M_len; i++) {
     A = A.concat("0");
@@ -100,6 +101,8 @@ var multiplicant = 9,
   __M = Binary.convert_string_to_array_of_binary(__M);
   minus_M = Binary.convert_string_to_array_of_binary(minus_M);
 
+  //* Fixing the length of __M , minux_M , Q
+  //ie. Adding 0 infront of __M , minux_M , Q
   if (__M.length < M_len) {
     __M.unshift(0);
   }
@@ -109,9 +112,13 @@ var multiplicant = 9,
   if (Q.length < Q_len) {
     Q.unshift(0);
   }
+
+  //* Finding A0Q-1
   var Q_0 = Q[Q.length - 1];
   var Q_1 = 0;
   var Q_0Q_1 = String(Q_0).concat(Q_1);
+
+  //* Branch logic of Booth's Algorithm
   while (count > 0) {
     switch (Q_0Q_1) {
       case "10":
@@ -138,20 +145,20 @@ var multiplicant = 9,
         break;
     }
 
-    //Merging A and Q
+    //*Merging A and Q
     AQ = [...A, ...Q];
 
-    //Seperating Q_1 from AQ as well as Arithmetic shifting to Right
+    //*Seperating Q_1 from AQ as well as Arithmetic shifting to Right
     AQ = AQ.reverse();
     [Q_1, ...AQ] = AQ;
     AQ = AQ.reverse();
     AQ.unshift(AQ[0]);
 
-    // Seperating A and Q from AQ
+    //* Seperating A and Q from AQ
     A = AQ.slice(0, M_len);
     Q = AQ.slice(M_len);
 
-    //next iteration
+    //*next iteration
     Q_0 = AQ[AQ.length - 1];
     Q_0Q_1 = String(Q_0).concat(String(Q_1));
     count--;
@@ -161,76 +168,6 @@ var multiplicant = 9,
 
   zzzzzzzzzzzzzzzzzzzzzzz = 1;
 })(multiplicant, multiplier);
-
-//* Two's complement using bitwise "not": "~" operator
-//@param 128 for 7 bit representation
-//@param number in int
-//@param 1 is added for 2's complement as 128 + ~number gives 1's complement -> string
-var minus_M = parseInt(128 + ~3 + 1, 10).toString(2);
-
-//* Return length of string
-//Q.length
-
-//* comparing Q0Q-1
-Q_0 = minus_M[minus_M.length - 1];
-Q_1 = 0;
-
-Q_0Q_1 = Q_0.toString() + Q_1.toString();
-
-//*Remove the first bit of binary
-minus_M = minus_M.slice(1);
-
-//* Arithmetic shift right
-bin = parseInt(9).toString(2);
-bin_0 = bin[0];
-bin = (parseInt(9) >> 1).toString(2);
-bin = bin_0.concat(bin); //
-String.zzzzzzzzzzzzzzzzzz = 1;
-
-function convert_string_to_array_of_binary(string) {
-  let arr = [];
-
-  for (let i = 0; i < string.length; i++) {
-    arr.push(parseInt(string[i], 2));
-  }
-  return arr;
-}
-
-A = convert_string_to_array_of_binary("1110");
-Q = convert_string_to_array_of_binary("1110");
-
-function binary_addition(Q, A) {
-  let Q_len = Q.length;
-  let carry = 0;
-  let sum = [];
-  for (let i = Q_len - 1; i >= 0; i--) {
-    sum[i] = Q[i] + A[i] + carry;
-    if (sum[i] > 1) {
-      carry = 1;
-    } else {
-      carry = 0;
-    }
-    sum[i] = sum[i] % 2;
-  }
-  return sum;
-}
-AQ = [...A, ...Q];
-AQ = AQ.reverse();
-[Q_1, ...AQ] = AQ;
-AQ = AQ.reverse();
-AQ.unshift(AQ[0]);
-
-bin = binary_addition([1, 1, 1, 1], [1, 0, 1, 0]);
-function convert_array_of_binary_to_string(arr) {
-  let string = "";
-  arr.forEach(element => {
-    string = string.concat(element);
-  });
-  return string;
-}
-
-var string = convert_array_of_binary_to_string([1, 0, 1, 1, 1]);
-var sum = binary_addition(A, Q);
 
 var DOM_select = {
   start: document.querySelector("#start"),
