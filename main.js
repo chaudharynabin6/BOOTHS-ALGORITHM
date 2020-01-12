@@ -122,8 +122,8 @@ var multiplicant = 9,
   while (count > 0) {
     switch (Q_0Q_1) {
       case "10":
-        //FIXED: A <- A - __M
-        // A += minus_M;  //!wrong approach
+        // FIXED: A <- A - __M
+        // A += minus_M;  //! wrong approach
         // A = parseInt(A, 2).toString(10) + parseInt(minus_M, 2).toString(10);
         // A = (A >>> 0).toString(2); //! not applicable for this condition
 

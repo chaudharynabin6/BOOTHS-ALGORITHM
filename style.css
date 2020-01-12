@@ -4,11 +4,27 @@
 #A_plus_M,
 #ASR,
 #stop {
-  fill: red;
+  fill: white;
   opacity: 1;
 }
 
 #first_decision,
 #count {
-  fill: blue;
+  fill: white;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+.row {
+  display: flex;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 10px;
 }
