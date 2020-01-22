@@ -9,7 +9,11 @@ var DOM_select = {
   count: document.querySelector("#count"),
   single_step: document.querySelector("#single_step"),
   reset: document.querySelector("#reset"),
-  table: document.querySelector("#table")
+  table: document.querySelector("#table"),
+  multiplicand: document.querySelector("#multiplicand"),
+  multiplier: document.querySelector("#multiplier"),
+  form: document.querySelector("#form"),
+  result: document.querySelector("#result")
 };
 Object.freeze(DOM_select);
 // DOM_select.ASR.style.fill = "green";
@@ -44,3 +48,15 @@ function view() {
 </tr>`
   );
 }
+
+DOM_select.reset.addEventListener("click", function() {
+  DOM_select.table.innerHTML = ` <tr>
+<th>A</th>
+<th>Q</th>
+<th>Q-1</th>
+<th>count</th>
+<th>operation</th>
+</tr>`;
+  callback = start;
+  DOM_select.result.innerHTML = ``;
+});
